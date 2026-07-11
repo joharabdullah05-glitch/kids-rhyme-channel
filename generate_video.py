@@ -20,13 +20,7 @@ from pathlib import Path
 import requests
 import edge_tts
 from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import (
-    ImageClip,
-    AudioFileClip,
-    CompositeVideoClip,
-    CompositeAudioClip,
-    concatenate_videoclips,
-)
+from moviepy.editor import ImageClip, AudioFileClip, CompositeVideoClip, CompositeAudioClip, concatenate_videoclips
 from moviepy.audio.fx.all import audio_loop, volumex
 
 ROOT = Path(__file__).parent
@@ -45,9 +39,20 @@ PAN_ZOOM_MARGIN = 0.18       # how much extra image size to allow panning across
 
 
 def pick_rhyme():
+    """Rotates through rhymes.json. Uses day-of-year plus an hour bucket so that
+    the 3 daily runs (Pakistan ~2 UTC, UK ~6 UTC, US ~11 UTC) each get a
+    different rhyme instead of repeating the same one."""
     rhymes = json.loads(RHYMES_FILE.read_text())
-    day_index = datetime.now(timezone.utc).timetuple().tm_yday
-    return rhymes[day_index % len(rhymes)]
+    now = datetime.now(timezone.utc)
+    day_index = now.timetuple().tm_yday
+    if now.hour < 4:
+        hour_bucket = 0   # Pakistan run
+    elif now.hour < 9:
+        hour_bucket = 1   # UK run
+    else:
+        hour_bucket = 2   # US run
+    index = day_index * 3 + hour_bucket
+    return rhymes[index % len(rhymes)]
 
 
 async def make_audio(text: str):
