@@ -2,7 +2,9 @@ name: Daily Nursery Rhyme Upload
 
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 2 * * *"    # ~7am Pakistan (PKT)
+    - cron: "0 6 * * *"    # ~7am United Kingdom (BST, summer)
+    - cron: "0 11 * * *"   # ~7am US East Coast (EDT, summer)
   workflow_dispatch: {}
 
 jobs:
