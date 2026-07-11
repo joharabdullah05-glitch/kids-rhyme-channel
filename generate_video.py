@@ -20,13 +20,7 @@ from pathlib import Path
 import requests
 import edge_tts
 from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import (
-    ImageClip,
-    AudioFileClip,
-    CompositeVideoClip,
-    CompositeAudioClip,
-    concatenate_videoclips,
-)
+from moviepy.editor import ( ImageClip, AudioFileClip, CompositeVideoClip, CompositeAudioClip, concatenate_videoclips,)
 from moviepy.audio.fx.all import audio_loop, volumex
 
 ROOT = Path(__file__).parent
